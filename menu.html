@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Menu with Search & Badges</title>
+  <style>
+    :root {
+      --gold: #ffd700;
+      --dark: #121212;
+      --light: #f0f0f0;
+      --card-bg: #1e1e1e;
+      --badge-spicy: #ff4c4c;
+      --badge-new: #4caf50;
+      --badge-special: #ff9800;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--dark);
+      color: #fff;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light-mode {
+      background: var(--light);
+      color: #000;
+    }
+
+    .logo {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      width: 50px;
+      z-index: 100;
+    }
+
+    .search-container {
+      padding: 90px 20px 10px;
+      text-align: center;
+    }
+
+    .search-input {
+      padding: 12px 20px;
+      border-radius: 30px;
+      width: 80%;
+      border: none;
+      font-size: 1rem;
+      background: #1e1e1e;
+      color: #fff;
+      outline: 2px solid var(--gold);
+    }
+
+    .search-input.light-mode {
+      background: #fff;
+      color: #000;
+      outline: 2px solid #000;
+    }
+
+    .tile-nav {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arrow {
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: var(--gold);
+      font-size: 2rem;
+      padding: 0 10px;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+
+    .arrow.left {
+      left: 0;
+    }
+
+    .arrow.right {
+      right: 0;
+    }
+
+    .category-tiles {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding: 20px 40px;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    .tile {
+      scroll-snap-align: center;
+      width: 80vw;  /* Adjusted for responsive */
+      height: 80vw; /* Keep square aspect ratio */
+      flex: 0 0 auto;
+      background: var(--card-bg);
+      border: 2px solid var(--gold);
+      border-radius: 15px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--gold);
+      cursor: pointer;
+      padding: 10px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;  /* Ensures the image fills the entire tile */
+      border-radius: 12px;
+    }
+
+    .tile:hover {
+      transform: scale(1.02);
+      box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .menu-section {
+      padding: 40px 20px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
+    }
+
+    .item-name {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .badge.Spicy {
+      background-color: var(--badge-spicy);
+    }
+
+    .badge.New {
+      background-color: var(--badge-new);
+    }
+
+    .badge["Chef's Choice"] {
+      background-color: var(--badge-special);
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: var(--card-bg);
+      color: var(--gold);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      border-top: 1px solid #444;
+      z-index: 1000;
+    }
+
+    .footer.light-mode {
+      background-color: #f0f0f0;
+      color: #000;
+      border-top: 1px solid #ccc;
+    }
+
+    .footer i {
+      font-size: 1.5rem;
+    }
+
+    /* Toggle button styles */
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background-color: var(--gold);
+      border: none;
+      border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <img src="images/small-logo.png" alt="Logo" class="logo" />
+
+  <!-- Theme Toggle Button -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+  <!-- Search -->
+  <div class="search-container">
+    <input type="text" class="search-input" id="searchInput" placeholder="Search menu..." />
+  </div>
+
+  <!-- Category Tiles with Arrows -->
+  <div class="tile-nav">
+    <button class="arrow left" onclick="scrollTiles(-1)">&#9664;</button>
+    <div class="category-tiles" id="categoryTiles"></div>
+    <button class="arrow right" onclick="scrollTiles(1)">&#9654;</button>
+  </div>
+
+  <!-- Menu Sections -->
+  <div id="menuSections"></div>
+
+  <!-- Footer -->
+  <div class="footer" id="footerBar">
+    <div><i class="fas fa-home"></i></div>
+    <div><i class="fas fa-question-circle"></i></div>
+  </div>
+
+  <script>
+    const menuData = {
+      veg: {
+        Starters: [
+          { name: "Paneer Tikka", price: 250, badges: ["Spicy", "New"], image: "images/veg.jpg" },
+          { name: "Spring Rolls", price: 200, badges: [], image: "images/spring-rolls.jpg" }
+        ]
+      },
+      nonveg: {
+        Grilled: [
+          { name: "Chicken Lollipop", price: 300, badges: ["Spicy"], image: "images/chicken-lollipop.jpg" },
+          { name: "Grilled Chicken Burger", price: 280, badges: ["Chef's Choice"], image: "images/grilled-chicken-burger.jpg" }
+        ]
+      },
+      drinks: {
+        "": [
+          { name: "Coke", price: 60, badges: ["New"], image: "images/coke.jpg" },
+          { name: "Lassi", price: 80, badges: [], image: "images/lassi.jpg" }
+        ]
+      },
+      fried: {
+        "": [
+          { name: "French Fries", price: 100, badges: [], image: "images/french-fries.jpg" },
+          { name: "Onion Rings", price: 120, badges: ["New"], image: "images/onion-rings.jpg" }
+        ]
+      },
+      desserts: {
+        "": [
+          { name: "Chocolate Lava Cake", price: 150, badges: ["Chef's Choice"], image: "images/chocolate-lava-cake.jpg" },
+          { name: "Ice Cream Sundae", price: 130, badges: [], image: "images/ice-cream-sundae.jpg" }
+        ]
+      }
+    };
+
+    const tilesContainer = document.getElementById("categoryTiles");
+    const sectionsContainer = document.getElementById("menuSections");
+
+    // Create category tiles with images
+    Object.keys(menuData).forEach(category => {
+      const tile = document.createElement("div");
+      tile.className = "tile";
+
+      const img = document.createElement("img");
+      const firstItem = menuData[category][Object.keys(menuData[category])[0]][0];
+      img.src = firstItem.image || 'images/default.jpg';  // Default image if no image is available
+      tile.appendChild(img);
+
+      const text = document.createElement("span");
+      text.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+      tile.appendChild(text);
+
+      tile.onclick = () => scrollToSection(category);
+      tilesContainer.appendChild(tile);
+    });
+
+    // Create menu sections
+    Object.entries(menuData).forEach(([category, groups]) => {
+      const section = document.createElement("div");
+      section.className = "menu-section";
+      section.id = category;
+
+      const title = document.createElement("div");
+      title.className = "section-title";
+      title.textContent = category.toUpperCase();
+      section.appendChild(title);
+
+      Object.entries(groups).forEach(([sub, items]) => {
+        if (sub) {
+          const subEl = document.createElement("h3");
+          subEl.textContent = sub;
+          subEl.style.color = "#aaa";
+          section.appendChild(subEl);
+        }
+
+        items.forEach(item => {
+          const itemEl = document.createElement("div");
+          itemEl.className = "menu-item";
+
+          const nameEl = document.createElement("div");
+          nameEl.className = "item-name";
+
+          const itemName = document.createElement("span");
+          itemName.textContent = item.name;
+          nameEl.appendChild(itemName);
+
+          if (item.badges && item.badges.length) {
+            item.badges.forEach(badge => {
+              const badgeEl = document.createElement("span");
+              badgeEl.className = `badge ${badge}`;
+              badgeEl.textContent = badge;
+              nameEl.appendChild(badgeEl);
+            });
+          }
+
+          const priceEl = document.createElement("span");
+          priceEl.textContent = `₹${item.price}`;
+
+          itemEl.appendChild(nameEl);
+          itemEl.appendChild(priceEl);
+          section.appendChild(itemEl);
+        });
+      });
+
+      sectionsContainer.appendChild(section);
+    });
+
+    // Scroll to section
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Arrows scroll
+    function scrollTiles(dir) {
+      const scrollAmount = window.innerWidth * 0.6;
+      tilesContainer.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+    }
+
+    // Search filter
+    document.getElementById("searchInput").addEventListener("input", e => {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll(".menu-section").forEach(section => {
+        let sectionVisible = false;
+        section.querySelectorAll(".menu-item").forEach(item => {
+          const name = item.querySelector(".item-name").textContent.toLowerCase();
+          const match = name.includes(query);
+          item.style.display = match ? "" : "none";
+          if (match) sectionVisible = true;
+        });
+        section.style.display = sectionVisible ? "" : "none";
+      });
+    });
+
+    // Theme toggle
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+      document.getElementById("footerBar").classList.toggle("light-mode");
+    }
+  </script>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>
