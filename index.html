@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Modern Restaurant Menu</title>
+  <title>Tibet MoMo - Perungalathur Menu</title>
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
@@ -38,7 +38,7 @@
     }
 
     .header .icon {
-      font-size: 20px;
+      font-size: 2em;
       cursor: pointer;
       color: #444;
       transition: transform 0.2s;
@@ -126,19 +126,18 @@
     }
 
     .tile-container {
-      display: flex;
-      overflow-x: auto;
-      align-items: center;
-      scroll-snap-type: x mandatory;
-      width: 100%;
-      height: 100%;
-      padding: 0;
-      white-space: nowrap;
-      background-color: gold;
+        display: flex;
+        overflow-x: auto;
+        align-items: center;
+        scroll-snap-type: x mandatory;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        white-space: nowrap;
     }
 
     .tile-wrapper {
-      width: 150px;
+      width: 200px;
       flex-shrink: 0;
       margin: 0 10px;
       scroll-snap-align: center;
@@ -197,7 +196,10 @@
       margin-bottom: 10px;
       color: gold;
       font-style: initial;
-      font-family: fantasy;
+      font-family: "Speedee Bold", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: black;
+
+
     }
 
     .item {
@@ -243,7 +245,7 @@
 
     @media (max-width: 500px) {
       .tile-wrapper {
-        width: 100px;
+        width: 150px;
       }
 
       .tile-card {
@@ -268,7 +270,7 @@
       <input type="text" id="searchInput" placeholder="Search items..." />
     </div>
         <!-- Map Icon for the Modal -->
-         <div class="icon" id="mapIcon" style="margin-left: auto;">📍</div>        
+         <div class="icon" id="mapIcon" style="margin-left: auto;">🛺</div>        
     
 
           <!-- Modal -->
@@ -291,50 +293,35 @@
   <script>
     const menuData = 
     {
-        "Burgers": {
-        
-          "MO Burgers": [
-            {
-              "name": "Veg Mo burger",
-              "price": 129,
-              "tags": []
-            },
-            {
-              "name": "Sig Paneer Mo  Burger",
-              "price": 149,
-              "tags": []
-            },
-            {
-              "name": "Chicken Mo  Burger",
-              "price": 149,
-              "tags": []
-            }
-          ]
-        },
         "Tibet Momos": {
           "Steamed": [
             {
               "name": "Tibetian Veg Momos",
               "price": 115,
               "tags": [
-                "Spicy",
                 "Veg"
               ]
             },
             {
               "name": "Mushroom Momos",
               "price": 145,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Signature Paneer Momos",
               "price": 145,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Cheesy Corn Momos",
               "price": 145,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Tibetian Chicken Momos",
@@ -346,45 +333,61 @@
             {
               "name": "Chicken Schezwan Momos",
               "price": 159,
-              "tags": []
+              "tags": [
+                "Spicy",
+                "Chicken"
+              ]
             },
             {
               "name": "Cheesy Chicken Momos",
               "price": 159,
-              "tags": []
+              "tags": [
+                "Cheese",
+                "Chicken"
+              ]
             },
             {
               "name": "Fish Momos",
               "price": 179,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             },
             {
               "name": "Prawn Momos",
               "price": 179,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             }
           ],
           "Fried": [
             {
               "name": "Tibetian Veg Momos  Fried",
               "price": 115,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Mushroom Momos Fried",
               "price": 145,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Signature Paneer Momos  Fried",
               "price": 145,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Cheesy Corn Momos  Fried",
               "price": 145,
               "tags": [
-                "Chicken"
+                "Veg"
               ]
             },
             {
@@ -395,61 +398,75 @@
             {
               "name": "Chicken Schezwan Momos  Fried",
               "price": 159,
-              "tags": []
+              "tags": [
+                "Spicy",
+                "Chicken"
+              ]
             },
             {
               "name": "Cheesy Chicken Momos  Fried",
               "price": 159,
-              "tags": []
+              "tags": [
+                "Cheese",
+                "Chicken"
+              ]
             },
             {
               "name": "Fish Momos  Fried",
               "price": 169,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             },
             {
               "name": "Prawn Momos Fried",
               "price": 189,
               "tags": [
-                "Spicy",
-                "Veg"
+                "Seafood"
               ]
             }
           ]
         },
-        "Saucy Pan Fried Momos": {
+        "Saucy Pan-Fried": {
           "Regular Saucy Pan Fried Momos": [
             {
               "name": "Schezwan Veg Momos",
               "price": 209,
               "tags": [
-                "Chicken"
+                "Veg",
+                "Spicy"
               ]
             },
             {
               "name": "Schezwan NonVeg Momos",
               "price": 209,
-              "tags": []
+              "tags": [
+                "Spicy"
+              ]
             }
           ],
           "Choice of Tibet Momos  Veg": [
             {
               "name": "Mushroom momos",
               "price": 10,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Cheesy corn momos",
               "price": 10,
               "tags": [
-                "Spicy",
+                "Cheese",
                 "Veg"
               ]
             },
             {
               "name": "Signature Paneer momos",
               "price": 10,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             }
           ],
           "Choice of Tibet Momos  Nonveg": [
@@ -468,22 +485,25 @@
             {
               "name": "Fish Momos",
               "price": 49,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             },
             {
               "name": "Prawn Momos",
               "price": 49,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             }
           ]
         },
-        "Signature Saucy Pan Fried Momos": {
+        "Signature Saucy Pan Fried": {
           "Butter Masala": [
             {
               "name": "Butter Masala Veg Momos",
               "price": 209,
               "tags": [
-                "Spicy",
                 "Veg"
               ]
             },
@@ -497,12 +517,16 @@
             {
               "name": "Afghani Veg Momos",
               "price": 219,
-              "tags": []
+              "tags": [
+                "veg"
+              ]
             },
             {
               "name": "Afghani Nonveg Momos",
               "price": 219,
-              "tags": []
+              "tags": [
+                "Yummy"
+              ]
             }
           ],
           "Chettinad": [
@@ -510,7 +534,7 @@
               "name": "Chettinad Veg Momos",
               "price": 209,
               "tags": [
-                "Chicken"
+                "Veg"
               ]
             },
             {
@@ -523,20 +547,24 @@
             {
               "name": "Mushroom momos",
               "price": 10,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Cheesy corn momos",
               "price": 10,
               "tags": [
-                "Spicy",
-                "Veg"
+                "Veg",
+                "Cheese"
               ]
             },
             {
               "name": "Signature Paneer momos",
               "price": 10,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             }
           ],
           "Choice of Tibet Momos  Nonveg": [
@@ -544,23 +572,29 @@
               "name": "Chicken Schezwan Momos",
               "price": 10,
               "tags": [
-                "Chicken"
+                "Spicy"
               ]
             },
             {
               "name": "Cheesy Chicken Momos",
               "price": 29,
-              "tags": []
+              "tags": [
+                "Cheese"
+              ]
             },
             {
               "name": "Fish Momos",
               "price": 49,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             },
             {
               "name": "Prawn Momos",
               "price": 49,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             }
           ]
         },
@@ -569,19 +603,50 @@
             {
               "name": "Chicken Lollipop",
               "price": 279,
-              "tags": []
+              "tags": [
+                "Chicken"
+              ]
             },
             {
               "name": "Crab Lollipop",
               "price": 329,
-              "tags": []
+              "tags": [
+                "Seafood"
+              ]
             }
           ],
           "Fries": [
             {
               "name": "French fries",
               "price": 139,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
+            }
+          ]
+        },
+        "Burgers": {
+          "MO Burgers": [
+            {
+              "name": "Veg Mo burger",
+              "price": 129,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Sig Paneer Mo  Burger",
+              "price": 149,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Chicken Mo  Burger",
+              "price": 149,
+              "tags": [
+                "Yummy"
+              ]
             }
           ]
         },
@@ -598,7 +663,9 @@
             {
               "name": "corny Mo Roll",
               "price": 189,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Chicken Momo Roll",
@@ -608,7 +675,9 @@
             {
               "name": "Jango Chicken Mo Roll",
               "price": 209,
-              "tags": []
+              "tags": [
+                "Yummy"
+              ]
             }
           ]
         },
@@ -617,7 +686,9 @@
             {
               "name": "Veg Momo Maggi",
               "price": 169,
-              "tags": []
+              "tags": [
+                "Yummy"
+              ]
             }
           ],
           "Chicken": [
@@ -633,7 +704,9 @@
             {
               "name": "Chocolate Momo 2pcs",
               "price": 60,
-              "tags": []
+              "tags": [
+                "Yummy"
+              ]
             }
           ]
         },
@@ -642,23 +715,29 @@
             {
               "name": "Blue Island Mojito",
               "price": 99,
-              "tags": []
+              "tags": [
+                "Cold"
+              ]
             },
             {
               "name": "Virgin Mojito",
               "price": 99,
-              "tags": []
+              "tags": [
+                "Cold"
+              ]
             },
             {
               "name": "Strawberry Love Mojito",
               "price": 99,
-              "tags": []
+              "tags": [
+                "Cold"
+              ]
             },
             {
               "name": "Litchi Freshers Mojito",
               "price": 99,
               "tags": [
-                "Chicken"
+                "Cold"
               ]
             }
           ],
@@ -666,19 +745,22 @@
             {
               "name": "Kit  Kat Shake",
               "price": 129,
-              "tags": []
+              "tags": [
+                "Sweet"
+              ]
             },
             {
               "name": "Oreo Shake",
               "price": 179,
-              "tags": []
+              "tags": [
+                "Sweet"
+              ]
             },
             {
               "name": "Cold Milo Magic Shake",
               "price": 129,
               "tags": [
-                "Spicy",
-                "Veg"
+                "Sweet"
               ]
             }
           ]
@@ -688,7 +770,9 @@
             {
               "name": "Tibet Original Veg Momos Combo",
               "price": 269,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Tibet Original Chicken Momos Combo",
@@ -702,7 +786,9 @@
             {
               "name": "Tibet Original Veg 10pcs2 Veg MoBurgers2 Mojitos",
               "price": 399,
-              "tags": []
+              "tags": [
+                "Veg"
+              ]
             },
             {
               "name": "Tibet Original Chicken 10pcs2 Chicken MoBurgers2 Mojitos",
@@ -715,14 +801,16 @@
               "name": "Veg Saucy Party Combo",
               "price": 899,
               "tags": [
-                "Spicy",
-                "Veg"
+                "Veg",
+                "Spicy"
               ]
             },
             {
               "name": "Chicken Saucy Party Combo",
               "price": 899,
-              "tags": []
+              "tags": [
+                "Spicy"
+              ]
             }
           ],
           "Doubles Combo": [
@@ -753,14 +841,15 @@
             {
               "name": "Veg Momos Mania 20 Pieces",
               "price": 499,
-              "tags": []
+              "tags": [
+                "Yummy"
+              ]
             },
             {
               "name": "Chicken Momos Mania 20 Pieces",
               "price": 595,
               "tags": [
-                "Spicy",
-                "Veg"
+                "Yummy"
               ]
             }
           ]
@@ -772,8 +861,8 @@
     const categoryImages = {
 "Burgers":"images/burger.png",
 "Tibet Momos":"images/steam_momo.png",
-"Saucy Pan Fried Momos":"images/pan_fried.png",
-"Signature Saucy Pan Fried Momos":"images/Saucy_Pan_Fried.png",
+"Saucy Pan-Fried":"images/pan_fried.png",
+"Signature Saucy Pan Fried":"images/Saucy_Pan_Fried.png",
 "Quick Eats":"images/lollipop.png",
 "Rolls":"images/roll.png",
 "Maggi Momo":"images/maggi_momo.png",
@@ -815,37 +904,48 @@
     }
 
 
-
     function loadTiles(data) {
-      const container = document.getElementById("tileContainer");
-      container.innerHTML = "";
-
-      Object.entries(data).forEach(([category]) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "tile-wrapper";
-
-        const card = document.createElement("div");
-        card.className = "tile-card";
-        card.dataset.category = category;
-
-        card.onclick = () => selectTile(category, data[category], card);
-
-        const img = document.createElement("img");
-        img.src = categoryImages[category] || "placeholder.jpg";
-        img.alt = category;
-
-        const title = document.createElement("div");
-        title.className = "tile-category-title";
-        title.innerText = category;
-
-        card.appendChild(img);
-        wrapper.appendChild(card);
-        wrapper.appendChild(title);
-        container.appendChild(wrapper);
-      });
-    }
+        const container = document.getElementById("tileContainer");
+        container.innerHTML = "";
+      
+        // Create an array to hold categories for later use
+        const categories = Object.entries(data);
+      
+        categories.forEach(([category]) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "tile-wrapper";
+      
+          const card = document.createElement("div");
+          card.className = "tile-card";
+          card.dataset.category = category;
+      
+          card.onclick = () => selectTile(category, data[category], card);
+      
+          const img = document.createElement("img");
+          img.src = categoryImages[category] || "placeholder.jpg";
+          img.alt = category;
+      
+          const title = document.createElement("div");
+          title.className = "tile-category-title";
+          title.innerText = category;
+      
+          card.appendChild(img);
+          wrapper.appendChild(card);
+          wrapper.appendChild(title);
+          container.appendChild(wrapper);
+        });
+      
+        // After loading the tiles, activate the first tile if it exists
+        if (categories.length > 0) {
+          const firstCategory = categories[0][0];
+          const firstSubcategory = data[firstCategory];
+          const firstCard = container.querySelector(".tile-card");
+          selectTile(firstCategory, firstSubcategory, firstCard);
+        }
+      }
 
     function selectTile(title, subcategories, selectedCard) {
+        
       document.querySelectorAll(".tile-card").forEach(card =>
         card.classList.remove("active")
       );
