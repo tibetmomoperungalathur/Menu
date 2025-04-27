@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tibet MoMo - Perungalathur Menu</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .logo {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        width: 50px;
+        z-index: 100;
+      }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      margin: 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      position: relative;
+      z-index: 10;
+    }
+
+    .header .icon {
+      font-size: 2em;
+      cursor: pointer;
+      color: #444;
+      transition: transform 0.2s;
+    }
+
+    .header .icon:hover {
+      transform: scale(1.1);
+    }
+
+    .search-bar {
+      display: none;
+      flex: 1;
+      margin-left: 15px;
+    }
+
+    .search-bar.active {
+      display: flex;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 8px 14px;
+      font-size: 15px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+     /* Modal Styles */
+     .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+      }
+      
+      .modal-content {
+        background-color: #fff;
+        padding: 30px 20px 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 400px;
+        text-align: center;
+        position: relative;
+      }
+      
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #888;
+      }
+      
+      .modal-close:hover {
+        color: #333;
+      }
+      
+      .modal-content a {
+        display: inline-block;
+        margin-top: 15px;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+    .tile-section {
+      flex-shrink: 0;
+      height: 30vh;
+      padding: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      margin: 0 10px;
+      display: flex;
+      flex-direction: column;
+      background-color: gold;
+    }
+
+    .tile-container {
+        display: flex;
+        overflow-x: auto;
+        align-items: center;
+        scroll-snap-type: x mandatory;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .tile-wrapper {
+      width: 200px;
+      flex-shrink: 0;
+      margin: 0 10px;
+      scroll-snap-align: center;
+      text-align: center;
+    }
+
+    .tile-card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tile-card.active {
+      border: 2px solid #ffcc00;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transform: scale(1.03);
+    }
+
+    .tile-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .tile-category-title {
+        font-size: 0.75em;
+        margin-top: 5px;
+        max-width: 120px; /* Limit the width to prevent overflow */
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide overflowed text */
+        text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+        display: inline-block; /* Ensure block size for proper text handling */
+      }
+
+    .item-list-section {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 0.3s;
+      margin: 10px;
+    }
+
+    .item-title {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: gold;
+      font-style: initial;
+      font-family: "Speedee Bold", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: black;
+
+
+    }
+
+    .item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item-name {
+      flex: 1;
+    }
+
+    .item-price {
+      font-weight: bold;
+    }
+
+    /* Base tag styling */
+    .tag {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      color: white;
+      font-size: 0.9em;
+      margin: 5px;
+      font-weight: bold;
+    }
+    
+    /* Tag colors based on the tag type */
+    .tag.Beef { background-color: #8e44ad; } /* Purple */
+    .tag.Chicken { background-color: #d35400; } /* Golden Brown */
+    .tag.Vegan { background-color: #27ae60; } /* Dark Green */
+    .tag.Veg { background-color: #2ecc71; } /* Light Green */
+    .tag.Cheese { background-color: #f39c12; } /* Yellow */
+    .tag.Spicy { background-color: #e74c3c; } /* Red */
+    .tag["Gluten-Free"] { background-color: #3498db; } /* Blue */
+    .tag["Dairy-Free"] { background-color: #a29bfe; } /* Lavender */
+    .tag.Seafood { background-color: #1abc9c; } /* Teal */
+    .tag.Cold { background-color: #74b9ff; } /* Light Blue */
+    .tag.Frozen { background-color: #81ecec; } /* Ice Blue */
+    .tag.Sweet { background-color: #f78fb3; } /* Pink */
+
+    @media (max-width: 500px) {
+      .tile-wrapper {
+        width: 150px;
+      }
+
+      .tile-card {
+        flex: 0 0 100px;
+      }
+
+      .header {
+        margin: 40px;
+        border-radius: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+    <div onclick="window.location.href='index.html';">
+        <img src="images/small-logo.png" alt="Logo" class="logo" /></div>
+  <div class="header">
+    
+    <div class="icon" id="searchIcon">🔍</div>
+    <div class="search-bar" id="searchBar">
+      <input type="text" id="searchInput" placeholder="Search items..." />
+    </div>
+        <!-- Map Icon for the Modal -->
+         <div class="icon" id="mapIcon" style="margin-left: auto;">🛺</div>        
+    
+
+          <!-- Modal -->
+          <div class="modal" id="mapModal">
+            <div class="modal-content">
+              <div class="modal-close" onclick="closeModal()">✖</div>
+              <h3>Our Restaurant Location</h3>
+              <p>Visit us at: <span id="restaurantAddress">123 Tasty St, Food City, FC 12345</span></p>
+              <a href="https://maps.app.goo.gl/sW9kpJn4m6VeZVRb6" target="_blank" id="getDirections">Get Directions</a>
+            </div>
+          </div>
+  </div>
+
+  <div class="tile-section">
+    <div class="tile-container" id="tileContainer"></div>
+  </div>
+
+  <div class="item-list-section" id="itemList"></div>
+
+  <script>
+    const menuData = 
+    {
+        "Tibet Momos": {
+          "Steamed": [
+            {
+              "name": "Tibetian Veg Momos",
+              "price": 115,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Mushroom Momos",
+              "price": 145,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Signature Paneer Momos",
+              "price": 145,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Cheesy Corn Momos",
+              "price": 145,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Tibetian Chicken Momos",
+              "price": 129,
+              "tags": [
+                "Chicken"
+              ]
+            },
+            {
+              "name": "Chicken Schezwan Momos",
+              "price": 159,
+              "tags": [
+                "Spicy",
+                "Chicken"
+              ]
+            },
+            {
+              "name": "Cheesy Chicken Momos",
+              "price": 159,
+              "tags": [
+                "Cheese",
+                "Chicken"
+              ]
+            },
+            {
+              "name": "Fish Momos",
+              "price": 179,
+              "tags": [
+                "Seafood"
+              ]
+            },
+            {
+              "name": "Prawn Momos",
+              "price": 179,
+              "tags": [
+                "Seafood"
+              ]
+            }
+          ],
+          "Fried": [
+            {
+              "name": "Tibetian Veg Momos  Fried",
+              "price": 115,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Mushroom Momos Fried",
+              "price": 145,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Signature Paneer Momos  Fried",
+              "price": 145,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Cheesy Corn Momos  Fried",
+              "price": 145,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Tibetian Chicken Momos  Fried",
+              "price": 129,
+              "tags": []
+            },
+            {
+              "name": "Chicken Schezwan Momos  Fried",
+              "price": 159,
+              "tags": [
+                "Spicy",
+                "Chicken"
+              ]
+            },
+            {
+              "name": "Cheesy Chicken Momos  Fried",
+              "price": 159,
+              "tags": [
+                "Cheese",
+                "Chicken"
+              ]
+            },
+            {
+              "name": "Fish Momos  Fried",
+              "price": 169,
+              "tags": [
+                "Seafood"
+              ]
+            },
+            {
+              "name": "Prawn Momos Fried",
+              "price": 189,
+              "tags": [
+                "Seafood"
+              ]
+            }
+          ]
+        },
+        "Saucy Pan-Fried": {
+          "Regular Saucy Pan Fried Momos": [
+            {
+              "name": "Schezwan Veg Momos",
+              "price": 209,
+              "tags": [
+                "Veg",
+                "Spicy"
+              ]
+            },
+            {
+              "name": "Schezwan NonVeg Momos",
+              "price": 209,
+              "tags": [
+                "Spicy"
+              ]
+            }
+          ],
+          "Choice of Tibet Momos  Veg": [
+            {
+              "name": "Mushroom momos",
+              "price": 10,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Cheesy corn momos",
+              "price": 10,
+              "tags": [
+                "Cheese",
+                "Veg"
+              ]
+            },
+            {
+              "name": "Signature Paneer momos",
+              "price": 10,
+              "tags": [
+                "Veg"
+              ]
+            }
+          ],
+          "Choice of Tibet Momos  Nonveg": [
+            {
+              "name": "Chicken Schezwan Momos",
+              "price": 10,
+              "tags": [
+                "Chicken"
+              ]
+            },
+            {
+              "name": "Cheesy Chicken Momos",
+              "price": 29,
+              "tags": []
+            },
+            {
+              "name": "Fish Momos",
+              "price": 49,
+              "tags": [
+                "Seafood"
+              ]
+            },
+            {
+              "name": "Prawn Momos",
+              "price": 49,
+              "tags": [
+                "Seafood"
+              ]
+            }
+          ]
+        },
+        "Signature Saucy Pan Fried": {
+          "Butter Masala": [
+            {
+              "name": "Butter Masala Veg Momos",
+              "price": 209,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Butter Masala Nonveg Momos",
+              "price": 209,
+              "tags": []
+            }
+          ],
+          "Afgani": [
+            {
+              "name": "Afghani Veg Momos",
+              "price": 219,
+              "tags": [
+                "veg"
+              ]
+            },
+            {
+              "name": "Afghani Nonveg Momos",
+              "price": 219,
+              "tags": [
+                "Yummy"
+              ]
+            }
+          ],
+          "Chettinad": [
+            {
+              "name": "Chettinad Veg Momos",
+              "price": 209,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Chettinad Nonveg Momos",
+              "price": 219,
+              "tags": []
+            }
+          ],
+          "Choice of Tibet Momos  Veg": [
+            {
+              "name": "Mushroom momos",
+              "price": 10,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Cheesy corn momos",
+              "price": 10,
+              "tags": [
+                "Veg",
+                "Cheese"
+              ]
+            },
+            {
+              "name": "Signature Paneer momos",
+              "price": 10,
+              "tags": [
+                "Veg"
+              ]
+            }
+          ],
+          "Choice of Tibet Momos  Nonveg": [
+            {
+              "name": "Chicken Schezwan Momos",
+              "price": 10,
+              "tags": [
+                "Spicy"
+              ]
+            },
+            {
+              "name": "Cheesy Chicken Momos",
+              "price": 29,
+              "tags": [
+                "Cheese"
+              ]
+            },
+            {
+              "name": "Fish Momos",
+              "price": 49,
+              "tags": [
+                "Seafood"
+              ]
+            },
+            {
+              "name": "Prawn Momos",
+              "price": 49,
+              "tags": [
+                "Seafood"
+              ]
+            }
+          ]
+        },
+        "Quick Eats": {
+          "Lollipop": [
+            {
+              "name": "Chicken Lollipop",
+              "price": 279,
+              "tags": [
+                "Chicken"
+              ]
+            },
+            {
+              "name": "Crab Lollipop",
+              "price": 329,
+              "tags": [
+                "Seafood"
+              ]
+            }
+          ],
+          "Fries": [
+            {
+              "name": "French fries",
+              "price": 139,
+              "tags": [
+                "Veg"
+              ]
+            }
+          ]
+        },
+        "Burgers": {
+          "MO Burgers": [
+            {
+              "name": "Veg Mo burger",
+              "price": 129,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Sig Paneer Mo  Burger",
+              "price": 149,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Chicken Mo  Burger",
+              "price": 149,
+              "tags": [
+                "Yummy"
+              ]
+            }
+          ]
+        },
+        "Rolls": {
+          "Mo Rolls": [
+            {
+              "name": "Veg Mo Roll",
+              "price": 159,
+              "tags": [
+                "Spicy",
+                "Veg"
+              ]
+            },
+            {
+              "name": "corny Mo Roll",
+              "price": 189,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Chicken Momo Roll",
+              "price": 189,
+              "tags": []
+            },
+            {
+              "name": "Jango Chicken Mo Roll",
+              "price": 209,
+              "tags": [
+                "Yummy"
+              ]
+            }
+          ]
+        },
+        "Maggi Momo": {
+          "Veg": [
+            {
+              "name": "Veg Momo Maggi",
+              "price": 169,
+              "tags": [
+                "Yummy"
+              ]
+            }
+          ],
+          "Chicken": [
+            {
+              "name": "Chicken Momo Maggi",
+              "price": 189,
+              "tags": []
+            }
+          ]
+        },
+        "Dessert": {
+          "Chocolate": [
+            {
+              "name": "Chocolate Momo 2pcs",
+              "price": 60,
+              "tags": [
+                "Yummy"
+              ]
+            }
+          ]
+        },
+        "Beverages": {
+          "Mojito": [
+            {
+              "name": "Blue Island Mojito",
+              "price": 99,
+              "tags": [
+                "Cold"
+              ]
+            },
+            {
+              "name": "Virgin Mojito",
+              "price": 99,
+              "tags": [
+                "Cold"
+              ]
+            },
+            {
+              "name": "Strawberry Love Mojito",
+              "price": 99,
+              "tags": [
+                "Cold"
+              ]
+            },
+            {
+              "name": "Litchi Freshers Mojito",
+              "price": 99,
+              "tags": [
+                "Cold"
+              ]
+            }
+          ],
+          "Shakes": [
+            {
+              "name": "Kit  Kat Shake",
+              "price": 129,
+              "tags": [
+                "Sweet"
+              ]
+            },
+            {
+              "name": "Oreo Shake",
+              "price": 179,
+              "tags": [
+                "Sweet"
+              ]
+            },
+            {
+              "name": "Cold Milo Magic Shake",
+              "price": 129,
+              "tags": [
+                "Sweet"
+              ]
+            }
+          ]
+        },
+        "Mega Savings and Party Combo": {
+          "Momos with Fries and Mojito Combo": [
+            {
+              "name": "Tibet Original Veg Momos Combo",
+              "price": 269,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Tibet Original Chicken Momos Combo",
+              "price": 269,
+              "tags": [
+                "Chicken"
+              ]
+            }
+          ],
+          "Big Bang Combo 2": [
+            {
+              "name": "Tibet Original Veg 10pcs2 Veg MoBurgers2 Mojitos",
+              "price": 399,
+              "tags": [
+                "Veg"
+              ]
+            },
+            {
+              "name": "Tibet Original Chicken 10pcs2 Chicken MoBurgers2 Mojitos",
+              "price": 399,
+              "tags": []
+            }
+          ],
+          "Saucy Party Combo": [
+            {
+              "name": "Veg Saucy Party Combo",
+              "price": 899,
+              "tags": [
+                "Veg",
+                "Spicy"
+              ]
+            },
+            {
+              "name": "Chicken Saucy Party Combo",
+              "price": 899,
+              "tags": [
+                "Spicy"
+              ]
+            }
+          ],
+          "Doubles Combo": [
+            {
+              "name": "2 Veg MoBurgers 99 each",
+              "price": 198,
+              "tags": []
+            },
+            {
+              "name": "2 Chicken MoBurgers 99 each",
+              "price": 198,
+              "tags": [
+                "Chicken"
+              ]
+            },
+            {
+              "name": "2 Veg Momos Rolls",
+              "price": 258,
+              "tags": []
+            },
+            {
+              "name": "2 Chicken Momos Rolls",
+              "price": 258,
+              "tags": []
+            }
+          ],
+          "Momo Mania": [
+            {
+              "name": "Veg Momos Mania 20 Pieces",
+              "price": 499,
+              "tags": [
+                "Yummy"
+              ]
+            },
+            {
+              "name": "Chicken Momos Mania 20 Pieces",
+              "price": 595,
+              "tags": [
+                "Yummy"
+              ]
+            }
+          ]
+        }
+      }
+          
+      ;
+
+    const categoryImages = {
+"Burgers":"images/burger.png",
+"Tibet Momos":"images/steam_momo.png",
+"Saucy Pan-Fried":"images/pan_fried.png",
+"Signature Saucy Pan Fried":"images/Saucy_Pan_Fried.png",
+"Quick Eats":"images/lollipop.png",
+"Rolls":"images/roll.png",
+"Maggi Momo":"images/maggi_momo.png",
+"Dessert":"images/choco_momo.png",
+"Beverages":"images/mojito.png",
+"Mega Savings and Party Combo":"images/momo_mania.png"
+
+      };
+  
+      let allItems = [];
+      Object.values(menuData).forEach(subcats =>
+        Object.values(subcats).forEach(items => allItems.push(...items))
+      );
+
+    const tagIconLookup = {
+      Beef: "fas fa-drumstick-bite",
+      Chicken: "fas fa-chicken",
+      Vegan: "fas fa-leaf",
+      Veg: "fas fa-leaf",
+      Cheese: "fas fa-cheese",
+      Spicy: "fas fa-pepper-hot",
+      "Gluten-Free": "fas fa-bread-slice",
+      "Dairy-Free": "fas fa-glass-whiskey",
+      Seafood: "fas fa-fish",
+      Cold: "fas fa-snowflake",
+      Frozen: "fas fa-ice-cream",
+      Sweet: "fas fa-candy-cane"
+    };
+
+    function generateTags(tags) {
+      return tags.map(tag => {
+        const iconClass = tagIconLookup[tag];
+        return `
+          <span class="tag ${tag}">
+            ${iconClass ? `<i class="${iconClass}"></i>` : ''} ${tag}
+          </span>
+        `;
+      }).join(" ");
+    }
+
+
+    function loadTiles(data) {
+        const container = document.getElementById("tileContainer");
+        container.innerHTML = "";
+      
+        // Create an array to hold categories for later use
+        const categories = Object.entries(data);
+      
+        categories.forEach(([category]) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "tile-wrapper";
+      
+          const card = document.createElement("div");
+          card.className = "tile-card";
+          card.dataset.category = category;
+      
+          card.onclick = () => selectTile(category, data[category], card);
+      
+          const img = document.createElement("img");
+          img.src = categoryImages[category] || "placeholder.jpg";
+          img.alt = category;
+      
+          const title = document.createElement("div");
+          title.className = "tile-category-title";
+          title.innerText = category;
+      
+          card.appendChild(img);
+          wrapper.appendChild(card);
+          wrapper.appendChild(title);
+          container.appendChild(wrapper);
+        });
+      
+        // After loading the tiles, activate the first tile if it exists
+        if (categories.length > 0) {
+          const firstCategory = categories[0][0];
+          const firstSubcategory = data[firstCategory];
+          const firstCard = container.querySelector(".tile-card");
+          selectTile(firstCategory, firstSubcategory, firstCard);
+        }
+      }
+
+    function selectTile(title, subcategories, selectedCard) {
+        
+      document.querySelectorAll(".tile-card").forEach(card =>
+        card.classList.remove("active")
+      );
+      selectedCard.classList.add("active");
+
+      const itemList = document.getElementById("itemList");
+      let html = `<div class="item-title">${title}</div>`;
+
+      Object.entries(subcategories).forEach(([subCat, items]) => {
+        html += `<h4 style="margin-top: 20px; color: #666;">${subCat}</h4>`;
+        html += items.map(item => `
+          <div class="item">
+            <span class="item-name">
+              ${item.name}
+              ${generateTags(item.tags)}
+            </span>
+            <span class="item-price">₹ ${item.price.toFixed(2)}</span>
+          </div>
+        `).join("");
+      });
+
+      itemList.innerHTML = html;
+      itemList.style.opacity = "1";
+    }
+
+    function loadFilteredItems(query) {
+      const itemList = document.getElementById("itemList");
+      const lowerQuery = query.toLowerCase();
+
+      const filtered = allItems.filter(item =>
+        item.name.toLowerCase().includes(lowerQuery) ||
+        item.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+      );
+
+      if (filtered.length === 0) {
+        itemList.innerHTML = `<div>No items match "${query}".</div>`;
+        return;
+      }
+
+      let html = `<div class="item-title">Search Results</div>`;
+      html += filtered.map(item => `
+        <div class="item">
+          <span class="item-name">
+            ${item.name}
+            ${generateTags(item.tags)}
+          </span>
+          <span class="item-price">₹ ${item.price.toFixed(2)}</span>
+        </div>
+      `).join("");
+
+      itemList.innerHTML = html;
+      itemList.style.opacity = "1";
+    }
+
+    document.getElementById("searchIcon").onclick = function () {
+      const searchBar = document.getElementById("searchBar");
+      const isActive = searchBar.classList.toggle("active");
+      const input = document.getElementById("searchInput");
+
+      if (isActive) {
+        input.focus();
+        loadFilteredItems(input.value);
+      } else {
+        input.value = "";
+        document.getElementById("itemList").innerHTML = "";
+        document.getElementById("itemList").style.opacity = "0";
+      }
+    };
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      const value = e.target.value.trim();
+      if (value === "") {
+        document.getElementById("itemList").innerHTML = "";
+        document.getElementById("itemList").style.opacity = "0";
+      } else {
+        loadFilteredItems(value);
+      }
+    });
+
+   
+  const mapIcon = document.getElementById("mapIcon");
+  const mapModal = document.getElementById("mapModal");
+  const getDirections = document.getElementById("getDirections");
+
+  mapIcon.onclick = function () {
+    mapModal.style.display = "flex";
+  };
+
+  function closeModal() {
+    mapModal.style.display = "none";
+  }
+
+  getDirections.onclick = function () {
+    closeModal(); // Close modal when directions clicked
+  };
+
+    // Menu data and other script functionalities are unchanged...
+    // Here, you can reuse the code you've already set up for menu, tiles, etc.
+
+    // Example address and modal content, you can dynamically update it if needed
+    restaurantAddress.innerText = "24, Kamaraj High Rd, Balaji Nagar, New Perungalathur, Chennai, Perungalathur, Tamil Nadu 600063, India";
+
+    loadTiles(menuData);
+  </script>
+  <script src="menuDataExtractor.js"></script>
+</body>
+</html>
